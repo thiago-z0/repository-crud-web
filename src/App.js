@@ -18,12 +18,31 @@ function App() {
     }
 
   async function handleAddRepository() {
-    
+    api.post('/repositories', {
+      "url": "https://github.com/Rocketseat/umbriel",
+      "title": "Rect Native",
+      "techs": [
+        "Node",
+        "Express",
+        "TypeScript"
+      ]
+    }).then(response => {
+      setRepositories([...repositories, response.data])
+    })
   }
+
 
   async function handleRemoveRepository(id) {
     api.delete('/repositories/'+id).then(response => {
-      getRepositories()
+      const found = repositories.find(element => element.id === id)
+
+      const index = repositories.indexOf(found)
+
+      const newRepository = repositories
+
+      newRepository.splice(index)
+
+      setRepositories([])
     })
   }
 
@@ -42,7 +61,7 @@ function App() {
         
       </ul>
 
-      <button onClick={handleAddRepository}>Adicionar</button>
+      <button onClick={() => handleAddRepository()}>Adicionar</button>
     </div>
   );
 }
